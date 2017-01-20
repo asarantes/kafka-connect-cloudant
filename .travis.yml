@@ -1,9 +1,7 @@
 ---
 branches:
   only:
-    - master
-    - release_qa
-    - release_ypprod
+    - travisbuild
 
 language: java
 
