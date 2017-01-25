@@ -13,3 +13,9 @@ script:
   ### BUILD WITH MAVEN
   ##########################
   - mvn clean install -Dmaven.test.skip=true
+
+after_success:
+  ##########################
+  ### CREATE OAUTH KEYS
+  ##########################
+  - travis setup releases
