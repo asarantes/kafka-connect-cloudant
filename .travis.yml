@@ -16,11 +16,3 @@ script:
 
 before_deploy: "echo 'ready?'"
   - travis setup releases
-
-deploy:
-  provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  file: "/home/travis/build/asarantes/kafka-connect-cloudant/target/kafka-connect-cloudant-0.0.1-SNAPSHOT.jar"
-  skip_cleanup: true
-  on:
-    tags: true
