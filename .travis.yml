@@ -11,7 +11,7 @@ before_deploy:
   - export REPO=kafka-console-cloudant
   - echo $TAGPERM
   - pwd
-  - export RELEASE_JAR_FILE=$(ls *.jar)
+  - export RELEASE_JAR_FILE=$(ls target/*.jar)
   - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
   - echo $TRAVIS_BRANCH, $TRAVIS_BUILD_NUMBER
   - git config --global user.email "builds@travis-ci.com"
