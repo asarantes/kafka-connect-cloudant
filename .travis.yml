@@ -5,99 +5,11 @@ branches:
 
 language: java
 
-env:
-  global:
-    - BUILD_TARGET_DIR=./streaming-service/target
-    - SERVER_DIR=./defaultServer
-    - TEST_DIR=./test
-
-before_install:
-  ##########################
-  ### INSTALL PYTHON3
-  ##########################
-  - sudo apt-get update
-  - sudo apt-get install python3
-  - sudo apt-get install python-virtualenv
-
-before_script:
-  - export NODE_ENV=production
+jdk:
+  - oraclejdk8
 
 script:
   ##########################
   ### BUILD WITH MAVEN
-  ########################## 
-  - mvn -f maven-parent clean install package
-  - git clone https://f48249c1c585e0da701fe9ecec03c957eb6bd2a5@github.ibm.com/ae/dap-deploy.git
-
-after_success:
   ##########################
-  ### CREATE WLP WITH APPS
-  ##########################
-
-  # create server directory structure
-  - mkdir $SERVER_DIR/apps
-  - mkdir $SERVER_DIR/lib
-  - mkdir $SERVER_DIR/lib/global
-
-  # copy build targets to server directory
-  - cp $BUILD_TARGET_DIR/streaming-service-0.0.1-SNAPSHOT.war $SERVER_DIR/apps/streaming-service.war
-  - cp $BUILD_TARGET_DIR/streaming-service-0.0.1-SNAPSHOT-dep.jar $SERVER_DIR/lib/global/streaming-service-dep.jar
-  - cp $BUILD_TARGET_DIR/streaming-service-0.0.1-SNAPSHOT.jar $SERVER_DIR/lib/global/streaming-service.jar
-
-  # Expand dependency jar file in global/lib folder
-  - cd $SERVER_DIR/lib/global/ && jar xvf streaming-service-dep.jar && cd -
-
-  # before_deploy:
-  ##########################
-  ### INSTALL DEPLOY SCRIPT
-  ##########################
-  # - npm install dap-deploy
-
-deploy:
-  ##########################
-  ### DEPLOY WLP TO BLUEMIX
-  ##########################
-  - provider: script
-    skip_cleanup: true
-    script:  ./dap-deploy/scripts/deploy.sh -a api.stage1.ng.bluemix.net -o cdsx -s dev -r apsx-streams-dev -p ./scripts/deploy/deploy.properties
-    on:
-      branch: master
-      
-  - provider: script
-    skip_cleanup: true
-    script:  ./dap-deploy/scripts/deploy.sh -a api.ng.bluemix.net -o cdsx -s qa -r apsx-streams-qa -p ./scripts/deploy/deploy.properties
-    on:
-      branch: release_qa
-      
-  - provider: script
-    skip_cleanup: true
-    script:  ./dap-deploy/scripts/deploy.sh -a api.ng.bluemix.net -o cdsx -s prod -r apsx-streams -p ./scripts/deploy/deploy.properties
-    on:
-      branch: release_ypprod
-
-after_deploy:
-  ##########################
-  ### RUN PYTHON TEST SUITE
-  ##########################
-
-  # Set up a virtualenv with all dependencies needed to run our py.test suite
-  - cd $TEST_DIR
-  - virtualenv -p /usr/bin/python3 py3env
-
-  - source py3env/bin/activate
-
-  - pip install pytest
-  - pip install requests
-
-  # Execute py.test suite to validate results
-  - py.test -s -v
-
-  # Deactivate virtualenv
-  - deactivate
-  - cd -
-
-notifications:
-  slack:
-    rooms:
-      - ibm-cloudplatform:8CH9GOYxdodBATeLGavqtkeG#dap-build
-group: bluezone
+  - mvn clean install -Dmaven.test.skip=true
