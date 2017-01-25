@@ -16,6 +16,7 @@ script:
 
 before_deploy: "echo 'ready?'"
   - travis setup releases
+
 deploy:
   provider: releases
   api_key: "GITHUB OAUTH TOKEN"
