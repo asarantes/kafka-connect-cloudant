@@ -7,7 +7,7 @@ jdk:
 script:
 - mvn clean install -Dmaven.test.skip=true
 #- mvn release:clean release:prepare -Darguments="-DskipTests" -DreleaseVersion="0.1.$TRAVIS_BUILD_NUMBER" -Dtag="$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER"
-before_deploy:
+after_success:
   - export USERNAME=asarantes
   - export REPO=kafka-console-cloudant
   - export RELEASE_JAR_FILE=$(ls target/*.jar)
