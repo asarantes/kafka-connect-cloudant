@@ -18,7 +18,7 @@ before_deploy:
   - git tag -a $GIT_TAG -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - echo $GIT_TAG
   - echo $GITHUB_API_KEY
-  - git push -q https://$GITHUB_API_KEY@github.com/$USERNAME/$REPO --tags
+  - git push -q https://$GITHUB_API_KEY:x-oauth-basic@github.com/$USERNAME/$REPO --tags
 #  git push -f -q https://<me>:$GITHUB_API_KEY@github.com
   - ls -R
 
