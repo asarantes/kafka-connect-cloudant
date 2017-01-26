@@ -19,7 +19,7 @@ deploy:
   api_key:
     secure: $GITHUB_API_KEY
   file_glob: true
-  file: "$RELEASE_JAR_FILE"
+  file: "target/*.jar"
   skip_cleanup: true
   on:
     repo: $USERNAME/$REPO
