@@ -19,7 +19,7 @@ before_deploy:
   - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
   - git tag -a $GIT_TAG -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - echo $GIT_TAG
-  - git push --tags
+  - git push --tags ssh://git@github.com/$USERNAME/$REPO
   - ls -R
   - echo $TAGPERM
   - export RELEASE_JAR_FILE=$(ls *.jar)
