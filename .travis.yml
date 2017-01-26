@@ -5,7 +5,8 @@ language: java
 jdk:
 - oraclejdk8
 script:
-- mvn clean install -Dmaven.test.skip=true
+#- mvn clean install -Dmaven.test.skip=true
+- mvn release:clean release:prepare -Darguments="-DskipTests" -DreleaseVersion="0.0.0.1" -DdevelopmentVersion="0.0.2" -Dtag="0.0.0.1-rc1" -DdryRun=true
 after_success:
   - export USERNAME=asarantes
   - export REPO=kafka-connect-cloudant
