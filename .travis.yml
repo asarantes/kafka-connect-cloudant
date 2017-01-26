@@ -6,32 +6,33 @@ jdk:
 - oraclejdk8
 script:
 - mvn clean install -Dmaven.test.skip=true
+#- mvn release:clean release:prepare -Darguments="-DskipTests" -DreleaseVersion="0.1.$TRAVIS_BUILD_NUMBER" -Dtag="$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER"
 before_deploy:
   - export USERNAME=asarantes
   - export REPO=kafka-console-cloudant
   - export RELEASE_JAR_FILE=$(ls target/*.jar)
   - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
   - echo $TRAVIS_BRANCH, $TRAVIS_BUILD_NUMBER
-  - git config --global user.email "builds@travis-ci.com"
-  - git config --global user.name "Travis CI"
-  - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
-  - git tag -a $GIT_TAG -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - echo $GIT_TAG
-  - echo $GITHUB_API_KEY
-  - git push -q https://$GITHUB_API_KEY:x-oauth-basic@github.com/$USERNAME/$REPO --tags
+  # - git config --global user.email "builds@travis-ci.com"
+  # - git config --global user.name "Travis CI"
+  # - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
+  # - git tag -a $GIT_TAG -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  # - echo $GIT_TAG
+  # - echo $GITHUB_API_KEY
+  # - git push -q https://$GITHUB_API_KEY:x-oauth-basic@github.com/$USERNAME/$REPO --tags
 #  git push -f -q https://<me>:$GITHUB_API_KEY@github.com
   - ls -R
 
 deploy:
   provider: releases
   api_key:
-    secure: fkEqXwh7xiitfsVrpir4Gud2Q+S86ro+L5+AP62QvNMY6nhktLgOiH6T7mmgs3TvnfAI3Ybn8FWgpv7bLmImu36LLMgC7ALUtZ0bZgsow8JfBcoSWIT2CsdMM5N+cRCQFY39R6Tgxza36j7KJOe5h0YxvIKHwNQO1Y+fPT3Xx9mGofdDDbAnnFZkjqfbgjj5VNVlUA0TVzUTa8Zy8MtCYVT5xcldzfa3HTAcEgWu6ZqVPfyleNckX3v6w9qNrGoIPOpntCxLlEphOhr1WVW94WzfEMSuXsxP34dPs/48ikQRYdU8gE1M9lezUjb/bc7uIiJ4ltL6L+XlrYThUBMXEgwJ3XBO5F1FM00xqIHzbYGXrmJjhDqN0KgzgAbSAHstXP9IeXu+JFlFDq9HJeOC56RV6PiS8fORwBsUZN9Dq57dnudqeNmhcnxXDvynGCVPszm3KN+LKICgwQQR2g4RZToQ64idM4I0ZWPf7SIUvZTM/AS/Ea9iz0lOSAZcJbeNe41ovOxT3TDToo0TKbfGNGNUwu9lJPZjuBTgN9Zk5xKn29bOR2Pzwrg4MHFRVX0VhdbMp/QBoUQ9K2DJWmiwYscAKYWAkun38XzCpHgvSGElFWGBwEX9MC3qH/zu1ywG5ZZl5XuGkH1h2+73KNifGq8CHkCGMfPoIw/3aR80fiU=
+    secure: $GITHUB_API_KEY
   file_glob: true
   file: "RELEASE_JAR_FILE"
   skip_cleanup: true
   on:
-    repo: asarantes/kafka-connect-cloudant
-    branch: travisbuild
-env:
-  global:
-    secure: fkEqXwh7xiitfsVrpir4Gud2Q+S86ro+L5+AP62QvNMY6nhktLgOiH6T7mmgs3TvnfAI3Ybn8FWgpv7bLmImu36LLMgC7ALUtZ0bZgsow8JfBcoSWIT2CsdMM5N+cRCQFY39R6Tgxza36j7KJOe5h0YxvIKHwNQO1Y+fPT3Xx9mGofdDDbAnnFZkjqfbgjj5VNVlUA0TVzUTa8Zy8MtCYVT5xcldzfa3HTAcEgWu6ZqVPfyleNckX3v6w9qNrGoIPOpntCxLlEphOhr1WVW94WzfEMSuXsxP34dPs/48ikQRYdU8gE1M9lezUjb/bc7uIiJ4ltL6L+XlrYThUBMXEgwJ3XBO5F1FM00xqIHzbYGXrmJjhDqN0KgzgAbSAHstXP9IeXu+JFlFDq9HJeOC56RV6PiS8fORwBsUZN9Dq57dnudqeNmhcnxXDvynGCVPszm3KN+LKICgwQQR2g4RZToQ64idM4I0ZWPf7SIUvZTM/AS/Ea9iz0lOSAZcJbeNe41ovOxT3TDToo0TKbfGNGNUwu9lJPZjuBTgN9Zk5xKn29bOR2Pzwrg4MHFRVX0VhdbMp/QBoUQ9K2DJWmiwYscAKYWAkun38XzCpHgvSGElFWGBwEX9MC3qH/zu1ywG5ZZl5XuGkH1h2+73KNifGq8CHkCGMfPoIw/3aR80fiU=
+    repo: $USERNAME/$REPO
+    branch: $TRAVIS_BRANCH
+# env:
+#   global:
+#     secure: fkEqXwh7xiitfsVrpir4Gud2Q+S86ro+L5+AP62QvNMY6nhktLgOiH6T7mmgs3TvnfAI3Ybn8FWgpv7bLmImu36LLMgC7ALUtZ0bZgsow8JfBcoSWIT2CsdMM5N+cRCQFY39R6Tgxza36j7KJOe5h0YxvIKHwNQO1Y+fPT3Xx9mGofdDDbAnnFZkjqfbgjj5VNVlUA0TVzUTa8Zy8MtCYVT5xcldzfa3HTAcEgWu6ZqVPfyleNckX3v6w9qNrGoIPOpntCxLlEphOhr1WVW94WzfEMSuXsxP34dPs/48ikQRYdU8gE1M9lezUjb/bc7uIiJ4ltL6L+XlrYThUBMXEgwJ3XBO5F1FM00xqIHzbYGXrmJjhDqN0KgzgAbSAHstXP9IeXu+JFlFDq9HJeOC56RV6PiS8fORwBsUZN9Dq57dnudqeNmhcnxXDvynGCVPszm3KN+LKICgwQQR2g4RZToQ64idM4I0ZWPf7SIUvZTM/AS/Ea9iz0lOSAZcJbeNe41ovOxT3TDToo0TKbfGNGNUwu9lJPZjuBTgN9Zk5xKn29bOR2Pzwrg4MHFRVX0VhdbMp/QBoUQ9K2DJWmiwYscAKYWAkun38XzCpHgvSGElFWGBwEX9MC3qH/zu1ywG5ZZl5XuGkH1h2+73KNifGq8CHkCGMfPoIw/3aR80fiU=
