@@ -9,8 +9,6 @@ script:
 before_deploy:
   - export USERNAME=asarantes
   - export REPO=kafka-console-cloudant
-  - echo $TAGPERM
-  - pwd
   - export RELEASE_JAR_FILE=$(ls target/*.jar)
   - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
   - echo $TRAVIS_BRANCH, $TRAVIS_BUILD_NUMBER
@@ -19,11 +17,10 @@ before_deploy:
   - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
   - git tag -a $GIT_TAG -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - echo $GIT_TAG
-  - git push --tags ssh://git@github.com/$USERNAME/$REPO
+  - echo $GITHUB_API_KEY
+  - git push -q https://$USERNAME:$GITHUB_API_KEY@github.com/$USERNAME/$REPO --tags
+#  git push -f -q https://<me>:$GITHUB_API_KEY@github.com
   - ls -R
-  - echo $TAGPERM
-  - export RELEASE_JAR_FILE=$(ls *.jar)
-  - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
 
 deploy:
   provider: releases
