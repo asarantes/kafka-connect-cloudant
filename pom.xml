@@ -8,7 +8,7 @@
 
   <groupId>com.ibm.cloudant</groupId>
   <artifactId>kafka-connect-cloudant</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>kafka-connect-cloudant</name>
   <description>Kafka Connect Cloudant connector</description>
 
@@ -24,7 +24,7 @@
     <url>scm:git:git@github.com:asarantes/kafka-connect-cloudant.git</url>
     <connection>scm:git:git@github.com:asarantes/kafka-connect-cloudant.git</connection>
     <developerConnection>scm:git:git@github.com:asarantes/kafka-connect-cloudant.git</developerConnection>
-    <tag>preview</tag>
+    <tag>v0.0.1-test1</tag>
   </scm>
 
   <distributionManagement>
