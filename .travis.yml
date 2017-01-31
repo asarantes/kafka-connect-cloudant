@@ -6,13 +6,13 @@ jdk:
 - oraclejdk8
 script:
   - mvn clean install -Dmaven.test.skip=true
-after_success:
-  - export USERNAME=asarantes
-  - export REPO=kafka-connect-cloudant
-  - export RELEASE_JAR_FILE=$(ls target/*.jar)
-  - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
-  - echo $TRAVIS_BRANCH, $TRAVIS_BUILD_NUMBER
-  - ls -R
+# after_success:
+#   - export USERNAME=asarantes
+#   - export REPO=kafka-connect-cloudant
+#   - export RELEASE_JAR_FILE=$(ls target/*.jar)
+#   - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
+#   - echo $TRAVIS_BRANCH, $TRAVIS_BUILD_NUMBER
+#   - ls -R
 
 # deploy:
 #   provider: releases
