@@ -6,4 +6,3 @@ jdk:
 - oraclejdk8
 script:
   - mvn clean install -Dmaven.test.skip=true
-# comment
