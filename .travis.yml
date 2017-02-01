@@ -4,7 +4,7 @@
 branches:
   only:
   # Default should be master.
-  - travisbuild
+  - master
 
 language: java
 jdk:
