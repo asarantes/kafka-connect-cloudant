@@ -182,8 +182,7 @@ fi
 
 # Commit ref to checkout when building
 # Change here if you need a different branch
-GIT_REF=${GIT_REF:-travisbuild}
-#GIT_REF=${GIT_REF:-master}
+GIT_REF=${GIT_REF:-master}
 
 if [[ "$RELEASE_PUBLISH" == "true" && "$GIT_TAG" ]]; then
     GIT_REF="tags/$GIT_TAG"
@@ -203,8 +202,7 @@ if [ -z "$RELEASE_TAG" ]; then
 fi
 
 # Github location
-RELEASE_STAGING_LOCATION="https://github.com/asarantes/kafka-connect-cloudant"
-#RELEASE_STAGING_LOCATION="https://github.com/cloudant-labs/kafka-connect-cloudant"
+RELEASE_STAGING_LOCATION="https://github.com/cloudant-labs/kafka-connect-cloudant"
 
 echo "  "
 echo "-------------------------------------------------------------"
@@ -230,8 +228,7 @@ function checkout_code {
     mkdir target
     cd target
     rm -rf kafka-connect-cloudant
-    git clone git@github.com:asarantes/kafka-connect-cloudant.git
-    #git clone git@github.com:cloudant-labs/kafka-connect-cloudant.git
+    git clone git@github.com:cloudant-labs/kafka-connect-cloudant.git
     cd kafka-connect-cloudant
     git checkout $GIT_REF
     git_hash=`git rev-parse --short HEAD`
