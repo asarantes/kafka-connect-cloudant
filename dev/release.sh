@@ -32,26 +32,27 @@ Use maven infrastructure to create a project release package and publish
 to staging release location (https://oss.sonatype.org/service/local/staging/deploy/maven2)
 and maven staging release repository.
 
---release-prepare --releaseVersion="1.0.0" --developmentVersion="1.1.0-SNAPSHOT" [--releaseRc="rc1"] [--tag="v2.0.0"] [--gitCommitHash="a874b73"]
-This form execute maven release:prepare and upload the release candidate distribution
-to the staging release location.
+--release-prepare --releaseVersion="1.0.0" --developmentVersion="1.1.0-SNAPSHOT" [--releaseRc="rc1"] [--tag="v1.0.0"] [--gitCommitHash="a874b73"]
+Execute maven release:prepare and upload the release candidate distribution
+to the staging release location (i.e. git repository).
 
 --release-publish --gitCommitHash="a874b73"
-Publish the maven artifacts of a release to the Sonatype maven central repository.
+Publish the maven artifacts of a release to the Sonatype maven central repository (staging).
 
 --release-snapshot [--gitCommitHash="a874b73"]
-Publish the maven snapshot artifacts to Sonatype maven central repository.
+Publish the maven snapshot artifacts to Sonatype maven central repository (snapshot).
 
 OPTIONS
 
 --releaseVersion     - Release identifier used when publishing
---developmentVersion - Release identifier used for next development cyce
+--developmentVersion - Release identifier used for next development cycle
 --releaseRc          - Release RC identifier used when publishing, default 'rc1'
 --tag                - Release Tag identifier used when taging the release, default 'v$releaseVersion'
 --gitCommitHash      - Release tag or commit to build from, default master HEAD
 --dryRun             - Dry run only, mostly used for testing.
 
-A GPG passphrase is expected as an environment variable
+A GPG passphrase is expected as an environment variable. You need GPG tools to
+create your key and upload to the public server.
 
 GPG_PASSPHRASE - Passphrase for GPG key used to sign release
 
@@ -180,9 +181,10 @@ if [[ "$RELEASE_SNAPSHOT" == "true" && "$DRY_RUN" ]]; then
 fi
 
 # Commit ref to checkout when building
-# Change to master when it's done
-#GIT_REF=${GIT_REF:-master}
+# Change here if you need a different branch
 GIT_REF=${GIT_REF:-travisbuild}
+#GIT_REF=${GIT_REF:-master}
+
 if [[ "$RELEASE_PUBLISH" == "true" && "$GIT_TAG" ]]; then
     GIT_REF="tags/$GIT_TAG"
 fi
@@ -200,9 +202,9 @@ if [ -z "$RELEASE_TAG" ]; then
   RELEASE_TAG="v$RELEASE_VERSION-$RELEASE_RC"
 fi
 
-# CHANGE THIS TO GITHUB
-RELEASE_STAGING_LOCATION=""
-
+# Github location
+RELEASE_STAGING_LOCATION="https://github.com/asarantes/kafka-connect-cloudant"
+#RELEASE_STAGING_LOCATION="https://github.com/cloudant-labs/kafka-connect-cloudant"
 
 echo "  "
 echo "-------------------------------------------------------------"
@@ -229,14 +231,13 @@ function checkout_code {
     cd target
     rm -rf kafka-connect-cloudant
     git clone git@github.com:asarantes/kafka-connect-cloudant.git
+    #git clone git@github.com:cloudant-labs/kafka-connect-cloudant.git
     cd kafka-connect-cloudant
     git checkout $GIT_REF
     git_hash=`git rev-parse --short HEAD`
     echo "Checked out Kafka Connect Cloudant git hash $git_hash"
 
     git clean -d -f -x
-    #rm .gitignore
-    #rm -rf .git
 
     cd "$BASE_DIR" #return to base dir
 }
@@ -292,12 +293,8 @@ if [[ "$RELEASE_SNAPSHOT" == "true" ]]; then
         exit 1
     fi
 
-    #Deploy default scala 2.11
+    #Deploy
     $MVN $PUBLISH_PROFILES -DaltDeploymentRepository=sonatype-nexus-staging::default::https://oss.sonatype.org/content/repositories/snapshots clean package gpg:sign install:install deploy:deploy -DskiptTests -Dmaven.test.skip=true -Darguments="-DskipTests" -Dgpg.passphrase=$GPG_PASSPHRASE
-
-    #Deploy scala 2.10
-    # ./dev/change-scala-version.sh 2.10
-    # $MVN $PUBLISH_PROFILES -DaltDeploymentRepository=apache.snapshots.https::default::https://repository.apache.org/content/repositories/snapshots clean package gpg:sign install:install deploy:deploy -DskiptTests -Darguments="-DskipTests" -Dscala-2.10 -Dgpg.passphrase=$GPG_PASSPHRASE
 
     cd "$BASE_DIR" #exit target
     exit 0
