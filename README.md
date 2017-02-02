@@ -132,7 +132,8 @@ A release manager will need to do the following steps to create a release.
 
 ### Maven Repository Initial Setup
 
-Create a ticket with Sonatype. [This link] (http://central.sonatype.org/pages/ossrh-guide.html) will provide more details and direct links with some helpful videos on the Initial Setup section. Basically, you need to do 2 things:
+Create a ticket with Sonatype. [This link] (http://central.sonatype.org/pages/ossrh-guide.html) will provide more details and direct links with some helpful videos in the Initial Setup section. Basically, you need to do 2 things:
+
 1. Create a JIRA account
 2. Create an issue that creates a repository for your project.
 
@@ -141,25 +142,27 @@ and referencing this project.
 
 ### Create GPG Signing Key
 
-Every release manager MUST create it's own signing key that is going to be used to sign all release artifacts.
+Every release manager MUST create its own signing key that is going to be used to sign all release artifacts.
 
-Follow steps to set up GPG on a Mac.
+Here are some steps to set up GPG on a Mac.
 
 1. Download and Install [GPG] (https://www.gnupg.org/download/)
 2. Follow steps to generate a key using a passphrase
 3. Set a public server that the maven repository can communicate with.
   * Go to Preferences/Key Server. hkp://pgp.mit.edu is an acceptable server.
 4. Select your key. Right click and then choose Send public key to key server.
-5. Export environment variable GPG_PASSPHRASE. This will be used by the release
-script. It is recommended that you add this to your profile (bashrc, bash_profile).
+5. Export environment variable GPG_PASSPHRASE. This will be used by the [release script](#Use+Release+Script). It is recommended that you add this to your profile (bashrc, bash_profile).
+```
+Example:
 
-Example: ```export  GPG_PASSPHRASE=mypassphrase```
+export  GPG_PASSPHRASE=mypassphrase
+```
 
 Details will vary depending on the OS. [Here] (https://cwiki.apache.org/confluence/display/TUSCANYxDOCx2x/Create+Signing+Key) is an additional link for Windows.
 
 ### Configure Maven Credentials
 
-After creating an account to the [Maven repository](#Maven+Repository+Initial+Setup), configuring maven credentials for staging repositories is needed. Please ensure you have your ~/.m2/settings.xml file the following server settings adding your username and password from your Maven repository account (create this file if you don't have it).
+After creating an account in the [Maven repository](#Maven+Repository+Initial+Setup), configuring maven credentials for staging repositories is needed. Please ensure your ~/.m2/settings.xml file has the following server settings adding your username and password from your Maven repository account (create this file if you don't have it).
 
 ``` XML
 <settings>
@@ -183,7 +186,7 @@ Running ```release.sh``` will provide usage, description, options and examples o
 use it.
 
 The release prepare option ```--release-prepare``` and ```--release-publish``` will be the two
-options run in this order when doing a release.
+options to run in this order when doing a release.
 
 Release prepare will:
 * Create a release tag in the repository
@@ -191,6 +194,7 @@ Release prepare will:
 
 ```
 Example:
+
 release.sh --release-prepare --releaseVersion="1.0.0" --developmentVersion="1.1.0-SNAPSHOT" --tag="v1.0.0"
 ```
 
@@ -199,5 +203,6 @@ and release artifacts to the staging release location.
 
 ```
 Example:
+
 release.sh --release-publish --gitTag="v1.0.0"
 ```
