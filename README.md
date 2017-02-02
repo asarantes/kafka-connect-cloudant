@@ -125,10 +125,10 @@ The settings in `test.properties` have to include Cloudant database credentials 
 ## Release Notes
 
 A release manager will need to do the following steps to create a release.
-* [Maven Repository Initial Setup](#Maven+Repository+Initial+Setup)
-* [Create GPG Signing Key](#Create+GPG+Signing+Key)
-* [Configure Maven Credentials](#Configure+Maven+Credentials)
-* [Use Release Script](#Use+Release+Script)
+* [Maven Repository Initial Setup](#maven-repository-initial-setup)
+* [Create GPG Signing Key](#create-gpg-signing-key)
+* [Configure Maven Credentials](#configure-maven-credentials)
+* [Use Release Script](#use-release-script)
 
 ### Maven Repository Initial Setup
 
@@ -151,7 +151,7 @@ Here are some steps to set up GPG on a Mac.
 3. Set a public server that the maven repository can communicate with.
   * Go to Preferences/Key Server. hkp://pgp.mit.edu is an acceptable server.
 4. Select your key. Right click and then choose Send public key to key server.
-5. Export environment variable GPG_PASSPHRASE. This will be used by the [release script](#Use+Release+Script). It is recommended that you add this to your profile (bashrc, bash_profile).
+5. Export environment variable GPG_PASSPHRASE. This will be used by the [release script](#use-release-script). It is recommended that you add this to your profile (bashrc, bash_profile).
 ```
 Example:
 
@@ -162,7 +162,7 @@ Details will vary depending on the OS. [Here] (https://cwiki.apache.org/confluen
 
 ### Configure Maven Credentials
 
-After creating an account in the [Maven repository](#Maven+Repository+Initial+Setup), configuring maven credentials for staging repositories is needed. Please ensure your ~/.m2/settings.xml file has the following server settings adding your username and password from your Maven repository account (create this file if you don't have it).
+After creating an account in the [Maven repository](#maven-repository-initial-setup), configuring maven credentials for staging repositories is needed. Please ensure your ~/.m2/settings.xml file has the following server settings adding your username and password from your Maven repository account (create this file if you don't have it).
 
 ``` XML
 <settings>
