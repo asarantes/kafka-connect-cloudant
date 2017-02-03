@@ -198,8 +198,7 @@ Example:
 release.sh --release-prepare --releaseVersion="1.0.0" --developmentVersion="1.1.0-SNAPSHOT" --tag="v1.0.0"
 ```
 
-Release publish will publish maven artifacts to the maven staging repository
-and release artifacts to the staging release location.
+Release publish will publish maven artifacts to the maven staging repository.
 
 ```
 Example:
