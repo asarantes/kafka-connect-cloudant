@@ -12,10 +12,10 @@ jdk:
 
 
 before_script:
-  - sed -i '.bak' -e 's/<account>/'"$CLOUDANT_ACCOUNT"'/g' \
-                  -e 's/<username>/'"$CLOUDANT_USERNAME"'/g' \
-                  -e 's/<database>/'"$CLOUDANT_DB"'/g' \
-                  -e 's/<password>/'"$CLOUDANT_PASSWORD"'/g' src/test/resources/test.properties
+  - sed -i  -e 's/<account>/'"$CLOUDANT_ACCOUNT"'/g' \
+            -e 's/<database>/'"$CLOUDANT_DB"'/g' \
+            -e 's/<username>/'"$CLOUDANT_USERNAME"'/g' \
+            -e 's/<password>/'"$CLOUDANT_PASSWORD"'/g' src/test/resources/test.properties
   - cat src/test/resources/test.properties
 ##########################
 ### BUILD WITH MAVEN
